@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Birthday Reminder App</string>
+    <string name="addBirthdayReminder">Add Reminder</string>
 </resources>
