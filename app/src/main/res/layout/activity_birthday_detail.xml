@@ -22,8 +22,8 @@
         android:id="@+id/txtViewRemainingDays"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="40dp"
         android:text="12 More Days Remaining"
         android:textColor="@color/purple_200"
         android:textSize="18sp"
@@ -32,11 +32,37 @@
 
     <Button
         android:id="@+id/btnAddReminder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_width="144dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="96dp"
         android:text="@string/addBirthdayReminder"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextReminderDateTime" />
+
+    <EditText
+        android:id="@+id/editTextSetTitle"
+        android:layout_width="250dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="68dp"
+        android:ems="10"
+        android:hint="@string/hintTitle"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.459"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtViewRemainingDays" />
+
+    <EditText
+        android:id="@+id/editTextReminderDateTime"
+        android:layout_width="241dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="104dp"
+        android:ems="10"
+        android:hint="@string/hintReminderDate"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextSetTitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>

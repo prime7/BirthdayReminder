@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">Birthday Reminder App</string>
     <string name="addBirthdayReminder">Add Reminder</string>
+    <string name="date_of_birth">Date Of Birth</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
+    <string name="add_to_your_list">ADD TO YOUR LIST</string>
+    <string name="pick_date">Select Date and Time</string>
+    <string name="add_dob_to_the_list">Add DOB To The List</string>
+    <string name="hintTitle">Set Title</string>
+    <string name="hintReminderDate">Add Date and Time</string>
 </resources>

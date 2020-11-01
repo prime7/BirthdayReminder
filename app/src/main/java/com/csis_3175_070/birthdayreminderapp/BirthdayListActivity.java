@@ -12,9 +12,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class BirthdayListActivity extends ListActivity {
     public static String[] allBirthdayList = {
-            "19 July - Tarek Ahmed",
+            "Add Birthday Input",
             "14 December - Ayon Elahi",
             "01 March - Mir Alahi",
             "30 January - John Smith",
@@ -34,7 +37,15 @@ public class BirthdayListActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+//        TimerTask task = new TimerTask() {
+//            @Override
+//            public void run() {
+//                finish();
+//                startActivity(new Intent(BirthdayListActivity.this, BirthdayDetailActivity.class)); //
+//            }
+//        };
+//        Timer opening = new Timer();
+//        opening.schedule(task,3000);
 
         setListAdapter(new ArrayAdapter<String>(
                 this,
@@ -47,9 +58,13 @@ public class BirthdayListActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-
-        Intent intent = new Intent(this,BirthdayDetailActivity.class);
-        intent.putExtra("BIRTHDAY_ID",position);
-        startActivity(intent);
+        if(position==0){
+            startActivity(new Intent(BirthdayListActivity.this,DOBAddActivity.class));
+        }
+        else {
+            Intent intent = new Intent(this, BirthdayDetailActivity.class);
+            intent.putExtra("BIRTHDAY_ID", position);
+            startActivity(intent);
+        }
     }
 }
