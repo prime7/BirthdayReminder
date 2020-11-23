@@ -2,69 +2,134 @@ package com.csis_3175_070.birthdayreminderapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ListActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class BirthdayListActivity extends ListActivity {
-    public static String[] allBirthdayList = {
-            "Add Birthday Input",
-            "14 December - Ayon Elahi",
-            "01 March - Mir Alahi",
-            "30 January - John Smith",
-            "19 July - John Snow",
-            "14 December - Robert Downing",
-            "01 March - Will Smith",
-            "30 January - Cristiano Ronaldo",
-            "19 July - Lionel Messi",
-            "14 December - Khabib Normagomedov",
-            "01 March - Conor Mcgregor",
-            "30 January- Justin Gaethji",
-            "19 July - Donald Trump",
-            "14 December - Barack Obama",
-            "01 March - Justin Trudeau",
-    };
+import java.util.ArrayList;
+
+public class BirthdayListActivity extends AppCompatActivity {
+
+    RecyclerView recyclerView;
+    FloatingActionButton add_button;
+    ImageView empty_imageview;
+    TextView no_data;
+
+    DBHelper myDB;
+    ArrayList<String> bdayId, bdayFname, bdayLname, bdayDate;
+    CustomAdapter customAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_birthday_list);
 
-//        TimerTask task = new TimerTask() {
-//            @Override
-//            public void run() {
-//                finish();
-//                startActivity(new Intent(BirthdayListActivity.this, BirthdayDetailActivity.class)); //
-//            }
-//        };
-//        Timer opening = new Timer();
-//        opening.schedule(task,3000);
+        recyclerView = findViewById(R.id.recyclerView);
+        add_button = findViewById(R.id.add_button);
+        empty_imageview = findViewById(R.id.empty_imageview);
+        no_data = findViewById(R.id.no_data);
+        add_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(BirthdayListActivity.this, DOBAddActivity.class);
+                startActivity(intent);
+            }
+        });
 
-        setListAdapter(new ArrayAdapter<String>(
-                this,
-                R.layout.activity_birthday_list,
-                R.id.birthdayList,
-                allBirthdayList
-        ));
+        myDB = new DBHelper(BirthdayListActivity.this);
+        bdayId = new ArrayList<>();
+        bdayFname = new ArrayList<>();
+        bdayLname = new ArrayList<>();
+        bdayDate = new ArrayList<>();
+
+        storeDataInArrays();
+
+        customAdapter = new CustomAdapter(BirthdayListActivity.this,this,bdayId, bdayFname, bdayLname,
+                bdayDate);
+        recyclerView.setAdapter(customAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(BirthdayListActivity.this));
+
     }
 
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        if(position==0){
-            startActivity(new Intent(BirthdayListActivity.this,DOBAddActivity.class));
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1){
+            recreate();
         }
-        else {
-            Intent intent = new Intent(this, BirthdayDetailActivity.class);
-            intent.putExtra("BIRTHDAY_ID", position);
-            startActivity(intent);
+    }
+
+    void storeDataInArrays(){
+        Cursor cursor = myDB.readAllData();
+        if(cursor.getCount() == 0){
+            empty_imageview.setVisibility(View.VISIBLE);
+            no_data.setVisibility(View.VISIBLE);
+        }else{
+            while (cursor.moveToNext()){
+                bdayId.add(cursor.getString(0));
+                bdayFname.add(cursor.getString(1));
+                bdayLname.add(cursor.getString(2));
+                bdayDate.add(cursor.getString(3));
+            }
+            empty_imageview.setVisibility(View.GONE);
+            no_data.setVisibility(View.GONE);
         }
+    }
+
+//    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.my_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+//
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.delete_all){
+            confirmDialog();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+//
+    void confirmDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete All?");
+        builder.setMessage("Are you sure you want to delete all Data?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                DBHelper myDB = new DBHelper(BirthdayListActivity.this);
+                myDB.deleteAllData();
+                //Refresh Activity
+                Intent intent = new Intent(BirthdayListActivity.this, BirthdayListActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        builder.create().show();
     }
 }

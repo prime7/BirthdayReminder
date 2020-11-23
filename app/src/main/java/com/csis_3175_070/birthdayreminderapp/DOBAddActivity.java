@@ -49,12 +49,10 @@ public class DOBAddActivity extends AppCompatActivity {
                 String FirstN = fName.getText().toString();
                 String LastN = lName.getText().toString();
                 String Date = date.getText().toString();
-
-                Boolean checkinsertdata = DB.insertuserdata(FirstN, LastN, Date);
-                if(checkinsertdata==true)
-                    Toast.makeText(DOBAddActivity.this, "New Entry Inserted", Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(DOBAddActivity.this, "New Entry Not Inserted", Toast.LENGTH_SHORT).show();
+                DBHelper myDB = new DBHelper(DOBAddActivity.this);
+                myDB.addDob(FirstN,
+                        LastN,
+                        Date);
             }        });
 
 
