@@ -32,6 +32,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         this.bdayFname = bdayFname;
         this.bdayLname = bdayLname;
         this.bdayDate = bdayDate;
+        //
     }
 
     @NonNull
