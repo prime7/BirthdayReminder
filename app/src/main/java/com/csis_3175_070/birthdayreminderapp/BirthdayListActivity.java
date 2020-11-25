@@ -30,7 +30,11 @@ public class BirthdayListActivity extends AppCompatActivity {
     TextView noData;
 
     DBHelper myDB;
-    ArrayList<String> bdayId, bdayFname, bdayLname, bdayDate;
+    ArrayList<String> bdayId;
+    ArrayList<String> bdayFname;
+    ArrayList<String> bdayLname;
+    ArrayList<Integer> notification;
+    ArrayList<String> bdayDate;
     CustomAdapter customAdapter;
 
     @Override
@@ -54,15 +58,14 @@ public class BirthdayListActivity extends AppCompatActivity {
         bdayId = new ArrayList<>();
         bdayFname = new ArrayList<>();
         bdayLname = new ArrayList<>();
+        notification = new ArrayList<Integer>();
         bdayDate = new ArrayList<>();
 
         storeDataInArrays();
 
-        customAdapter = new CustomAdapter(BirthdayListActivity.this, this, bdayId, bdayFname, bdayLname,
-                bdayDate);
+        customAdapter = new CustomAdapter(BirthdayListActivity.this, this, bdayId, bdayFname, bdayLname, notification, bdayDate);
         recyclerView.setAdapter(customAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(BirthdayListActivity.this));
-
     }
 
     @Override
@@ -83,7 +86,8 @@ public class BirthdayListActivity extends AppCompatActivity {
                 bdayId.add(cursor.getString(0));
                 bdayFname.add(cursor.getString(1));
                 bdayLname.add(cursor.getString(2));
-                bdayDate.add(cursor.getString(3));
+                notification.add(cursor.getInt(3));
+                bdayDate.add(cursor.getString(4));
             }
             emptyImageView.setVisibility(View.GONE);
             noData.setVisibility(View.GONE);

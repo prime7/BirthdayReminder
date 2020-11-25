@@ -14,12 +14,13 @@ class DBHelper extends SQLiteOpenHelper {
 
     private Context context;
     private static final String DATABASE_NAME = "BirthdayApp.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static final String TABLE_NAME = "doblist";
     private static final String COLUMN_ID = "_id";
     private static final String COLUMN_FName = "firstname";
     private static final String COLUMN_LName = "lastname";
+    private static final String COLUMN_NOTIFICATION = "notification"; // 0=false 1=true
     private static final String COLUMN_Date = "date";
 
     DBHelper(@Nullable Context context) {
@@ -33,6 +34,7 @@ class DBHelper extends SQLiteOpenHelper {
                 " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_FName + " TEXT, " +
                 COLUMN_LName + " TEXT, " +
+                COLUMN_NOTIFICATION + " INTEGER, " +
                 COLUMN_Date + " DATE);";
         db.execSQL(query);
     }
@@ -48,6 +50,7 @@ class DBHelper extends SQLiteOpenHelper {
 
         cv.put(COLUMN_FName, fname);
         cv.put(COLUMN_LName, lname);
+        cv.put(COLUMN_NOTIFICATION,0);
         cv.put(COLUMN_Date, String.valueOf(date));
         long result = db.insert(TABLE_NAME,null, cv);
         if(result == -1){
@@ -68,11 +71,12 @@ class DBHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    void updateData(String row_id, String fname, String lname, String date){
+    void updateData(String row_id, String fname, String lname, int notification, String date){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_FName, fname);
         cv.put(COLUMN_LName, lname);
+        cv.put(COLUMN_NOTIFICATION,notification);
         cv.put(COLUMN_Date, date);
 
         long result = db.update(TABLE_NAME, cv, "_id=?", new String[]{row_id});
@@ -98,5 +102,4 @@ class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_NAME);
     }
-
 }

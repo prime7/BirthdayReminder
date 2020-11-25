@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -16,8 +17,10 @@ public class UpdateActivity extends AppCompatActivity {
 
     EditText firstName, lastName, dateOfBirth;
     Button updateButton, deleteButton;
+    CheckBox notification;
 
-    String id, title, author, pages;
+    String id, fName, lName, dob;
+    int noti;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +29,7 @@ public class UpdateActivity extends AppCompatActivity {
 
         firstName = findViewById(R.id.ETFirstName);
         lastName = findViewById(R.id.ETLastName);
+        notification = findViewById(R.id.checkBoxNotification);
         dateOfBirth = findViewById(R.id.ETDateOfBirth);
         updateButton = findViewById(R.id.update_button);
         deleteButton = findViewById(R.id.delete_button);
@@ -36,7 +40,7 @@ public class UpdateActivity extends AppCompatActivity {
         //Set actionbar title after getAndSetIntentData method
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
-            ab.setTitle(title);
+            ab.setTitle(fName);
         }
 
         updateButton.setOnClickListener(new View.OnClickListener() {
@@ -44,10 +48,15 @@ public class UpdateActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //And only then we call this
                 DBHelper myDB = new DBHelper(UpdateActivity.this);
-                title = firstName.getText().toString().trim();
-                author = lastName.getText().toString().trim();
-                pages = dateOfBirth.getText().toString().trim();
-                myDB.updateData(id, title, author, pages);
+                fName = firstName.getText().toString().trim();
+                lName = lastName.getText().toString().trim();
+                if (notification.isChecked()){
+                    noti = 1;
+                }else {
+                    noti = 0;
+                }
+                dob = dateOfBirth.getText().toString().trim();
+                myDB.updateData(id, fName, lName, noti,dob);
                 finish();
             }
         });
@@ -66,15 +75,21 @@ public class UpdateActivity extends AppCompatActivity {
 
             //Getting Data from Intent
             id = getIntent().getStringExtra("id");
-            title = getIntent().getStringExtra("firstname");
-            author = getIntent().getStringExtra("lastname");
-            pages = getIntent().getStringExtra("date");
+            fName = getIntent().getStringExtra("firstname");
+            lName = getIntent().getStringExtra("lastname");
+            noti = getIntent().getIntExtra("notification",0);
+            dob = getIntent().getStringExtra("date");
 
             //Setting Intent Data
-            firstName.setText(title);
-            lastName.setText(author);
-            dateOfBirth.setText(pages);
-            Log.d("stev", title+" "+author+" "+pages);
+            firstName.setText(fName);
+            lastName.setText(lName);
+            if(noti==0){
+                notification.setChecked(false);
+            }else{
+                notification.setChecked(true);
+            }
+            dateOfBirth.setText(dob);
+            Log.d("stev", fName+" "+lName+" "+dob);
         }else{
             Toast.makeText(this, "No data.", Toast.LENGTH_SHORT).show();
         }
@@ -82,8 +97,8 @@ public class UpdateActivity extends AppCompatActivity {
 
     void confirmDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Delete " + title + " ?");
-        builder.setMessage("Are you sure you want to delete " + title + " ?");
+        builder.setTitle("Delete " + fName + " ?");
+        builder.setMessage("Are you sure you want to delete " + fName + " ?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

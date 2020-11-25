@@ -22,15 +22,15 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     private Context context;
     private Activity activity;
-    private ArrayList  bdayId,bdayFname, bdayLname, bdayDate;
+    private ArrayList bdayId, bdayFname, bdayLname, notification, bdayDate;
 
-    CustomAdapter(Activity activity, Context context,ArrayList bdayid, ArrayList bdayFname, ArrayList bdayLname,
-                  ArrayList bdayDate){
-        this.bdayId=bdayid;
+    CustomAdapter(Activity activity, Context context, ArrayList bdayid, ArrayList bdayFname, ArrayList bdayLname, ArrayList notification, ArrayList bdayDate) {
+        this.bdayId = bdayid;
         this.activity = activity;
         this.context = context;
         this.bdayFname = bdayFname;
         this.bdayLname = bdayLname;
+        this.notification = notification;
         this.bdayDate = bdayDate;
         //
     }
@@ -58,6 +58,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
                 intent.putExtra("id", String.valueOf(bdayId.get(position)));
                 intent.putExtra("firstname", String.valueOf(bdayFname.get(position)));
                 intent.putExtra("lastname", String.valueOf(bdayLname.get(position)));
+                intent.putExtra("notification",Integer.valueOf((Integer) notification.get(position)));
                 intent.putExtra("date", String.valueOf(bdayDate.get(position)));
                 activity.startActivityForResult(intent, 1);
             }
