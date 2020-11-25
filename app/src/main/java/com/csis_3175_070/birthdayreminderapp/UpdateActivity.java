@@ -14,8 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class UpdateActivity extends AppCompatActivity {
 
-    EditText title_input, author_input, pages_input;
-    Button update_button, delete_button;
+    EditText titleInput, authorInput, pagesInput;
+    Button updateButton, deleteButton;
 
     String id, title, author, pages;
 
@@ -24,11 +24,11 @@ public class UpdateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
 
-        title_input = findViewById(R.id.title_input2);
-        author_input = findViewById(R.id.author_input2);
-        pages_input = findViewById(R.id.pages_input2);
-        update_button = findViewById(R.id.update_button);
-        delete_button = findViewById(R.id.delete_button);
+        titleInput = findViewById(R.id.title_input2);
+        authorInput = findViewById(R.id.author_input2);
+        pagesInput = findViewById(R.id.pages_input2);
+        updateButton = findViewById(R.id.update_button);
+        deleteButton = findViewById(R.id.delete_button);
 
         //First we call this
         getAndSetIntentData();
@@ -39,18 +39,19 @@ public class UpdateActivity extends AppCompatActivity {
             ab.setTitle(title);
         }
 
-        update_button.setOnClickListener(new View.OnClickListener() {
+        updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //And only then we call this
-                DBHelper myDB = new DBHelper(com.csis_3175_070.birthdayreminderapp.UpdateActivity.this);
-                title = title_input.getText().toString().trim();
-                author = author_input.getText().toString().trim();
-                pages = pages_input.getText().toString().trim();
+                DBHelper myDB = new DBHelper(UpdateActivity.this);
+                title = titleInput.getText().toString().trim();
+                author = authorInput.getText().toString().trim();
+                pages = pagesInput.getText().toString().trim();
                 myDB.updateData(id, title, author, pages);
+                finish();
             }
         });
-        delete_button.setOnClickListener(new View.OnClickListener() {
+        deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 confirmDialog();
@@ -70,9 +71,9 @@ public class UpdateActivity extends AppCompatActivity {
             pages = getIntent().getStringExtra("date");
 
             //Setting Intent Data
-            title_input.setText(title);
-            author_input.setText(author);
-            pages_input.setText(pages);
+            titleInput.setText(title);
+            authorInput.setText(author);
+            pagesInput.setText(pages);
             Log.d("stev", title+" "+author+" "+pages);
         }else{
             Toast.makeText(this, "No data.", Toast.LENGTH_SHORT).show();

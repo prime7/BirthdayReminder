@@ -20,6 +20,7 @@ import java.util.Calendar;
 
 public class BirthdayDetailActivity extends AppCompatActivity {
     EditText date_time_in;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +45,8 @@ public class BirthdayDetailActivity extends AppCompatActivity {
 
         );
 
-        int birthdayId = getIntent().getIntExtra("BIRTHDAY_ID",0);
-        Log.d("BirthdayDetailActivity", "onCreate: "+birthdayId);
+        int birthdayId = getIntent().getIntExtra("BIRTHDAY_ID", 0);
+        Log.d("BirthdayDetailActivity", "onCreate: " + birthdayId);
     }
 
     private void showDateTimeDialog(final EditText date_time_in) {
@@ -68,13 +69,11 @@ public class BirthdayDetailActivity extends AppCompatActivity {
                         date_time_in.setText(simpleDateFormat.format(calendar.getTime()));
                     }
                 };
-
                 new TimePickerDialog(BirthdayDetailActivity.this, timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show();
             }
         };
 
         new DatePickerDialog(BirthdayDetailActivity.this, dateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
-
     }
 };
 
