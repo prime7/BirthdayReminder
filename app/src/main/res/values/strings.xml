@@ -9,4 +9,7 @@
     <string name="add_dob_to_the_list">Add DOB To The List</string>
     <string name="hintTitle">Set Title</string>
     <string name="hintReminderDate">Add Date and Time</string>
+    <string name="wantNotification">Want notification?</string>
+    <string name="delete">Delete</string>
+    <string name="update">Update</string>
 </resources>

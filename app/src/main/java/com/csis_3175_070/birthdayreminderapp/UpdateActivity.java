@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class UpdateActivity extends AppCompatActivity {
 
-    EditText titleInput, authorInput, pagesInput;
+    EditText firstName, lastName, dateOfBirth;
     Button updateButton, deleteButton;
 
     String id, title, author, pages;
@@ -24,9 +24,9 @@ public class UpdateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
 
-        titleInput = findViewById(R.id.title_input2);
-        authorInput = findViewById(R.id.author_input2);
-        pagesInput = findViewById(R.id.pages_input2);
+        firstName = findViewById(R.id.ETFirstName);
+        lastName = findViewById(R.id.ETLastName);
+        dateOfBirth = findViewById(R.id.ETDateOfBirth);
         updateButton = findViewById(R.id.update_button);
         deleteButton = findViewById(R.id.delete_button);
 
@@ -44,9 +44,9 @@ public class UpdateActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //And only then we call this
                 DBHelper myDB = new DBHelper(UpdateActivity.this);
-                title = titleInput.getText().toString().trim();
-                author = authorInput.getText().toString().trim();
-                pages = pagesInput.getText().toString().trim();
+                title = firstName.getText().toString().trim();
+                author = lastName.getText().toString().trim();
+                pages = dateOfBirth.getText().toString().trim();
                 myDB.updateData(id, title, author, pages);
                 finish();
             }
@@ -71,9 +71,9 @@ public class UpdateActivity extends AppCompatActivity {
             pages = getIntent().getStringExtra("date");
 
             //Setting Intent Data
-            titleInput.setText(title);
-            authorInput.setText(author);
-            pagesInput.setText(pages);
+            firstName.setText(title);
+            lastName.setText(author);
+            dateOfBirth.setText(pages);
             Log.d("stev", title+" "+author+" "+pages);
         }else{
             Toast.makeText(this, "No data.", Toast.LENGTH_SHORT).show();
