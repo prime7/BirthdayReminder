@@ -7,12 +7,12 @@
     tools:context=".ReminderNotification">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewTitleReminder"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@drawable/bday"
         android:gravity="center"
-        android:text="Title For Reminder"
+        android:text="@string/txtViewTitleReminder"
         android:textColor="#F44336"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"

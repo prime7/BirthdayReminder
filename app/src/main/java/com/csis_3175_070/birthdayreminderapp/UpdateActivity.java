@@ -1,6 +1,11 @@
 package com.csis_3175_070.birthdayreminderapp;
 
+import android.app.AlarmManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +17,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+
+import java.util.Calendar;
 
 public class UpdateActivity extends AppCompatActivity {
 
@@ -21,6 +29,7 @@ public class UpdateActivity extends AppCompatActivity {
 
     String id, fName, lName, dob;
     int noti;
+    int notId=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +53,7 @@ public class UpdateActivity extends AppCompatActivity {
         }
 
         updateButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 //And only then we call this
@@ -52,8 +62,38 @@ public class UpdateActivity extends AppCompatActivity {
                 lName = lastName.getText().toString().trim();
                 if (notification.isChecked()){
                     noti = 1;
+
+                    dob = dateOfBirth.getText().toString().trim();
+                    String[] d = dob.split("-");
+                    int day = Integer.parseInt(d[0]);
+                    int month = Integer.parseInt(d[1]);
+
+                    Log.d("ASD",day+" "+month);
+
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(Calendar.HOUR_OF_DAY,22);
+                    calendar.set(Calendar.MINUTE,04);
+                    calendar.set(Calendar.SECOND,0);
+                    calendar.set(Calendar.DAY_OF_MONTH,day);
+                    calendar.set(Calendar.MONTH,month);
+
+                    AlarmManager manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                    Intent intent = new Intent(getBaseContext(),MyReceiver.class);
+                    intent.setAction("com.tarek.alarm");
+                    intent.putExtra("Message","It's "+fName+" "+lName+"'s Birthday tomorrow.");
+
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                    manager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+
                 }else {
                     noti = 0;
+                    AlarmManager manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                    Intent intent = new Intent(getBaseContext(),MyReceiver.class);
+                    intent.setAction("com.tarek.alarm");
+                    intent.putExtra("Message","It's "+fName+" "+lName+"'s Birthday tomorrow.");
+
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(),0,intent,PendingIntent.FLAG_CANCEL_CURRENT);
+                    manager.cancel(pendingIntent);
                 }
                 dob = dateOfBirth.getText().toString().trim();
                 myDB.updateData(id, fName, lName, noti,dob);
