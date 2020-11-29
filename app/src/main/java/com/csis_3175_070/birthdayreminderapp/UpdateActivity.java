@@ -72,7 +72,7 @@ public class UpdateActivity extends AppCompatActivity {
 
                     Calendar calendar = Calendar.getInstance();
                     calendar.set(Calendar.HOUR_OF_DAY,22);
-                    calendar.set(Calendar.MINUTE,04);
+                    calendar.set(Calendar.MINUTE,30);
                     calendar.set(Calendar.SECOND,0);
                     calendar.set(Calendar.DAY_OF_MONTH,day);
                     calendar.set(Calendar.MONTH,month);
@@ -83,7 +83,13 @@ public class UpdateActivity extends AppCompatActivity {
                     intent.putExtra("Message","It's "+fName+" "+lName+"'s Birthday tomorrow.");
 
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                    // Comment below line when checking alarm in debug
                     manager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+
+                    // Un comment the below 3 lines to check alarm in debug
+                    //Calendar c = Calendar.getInstance();
+                    //c.add(Calendar.SECOND,60);
+                    //manager.setRepeating(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
 
                 }else {
                     noti = 0;
