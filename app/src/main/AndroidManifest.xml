@@ -9,21 +9,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BirthdayReminderApp">
+        <activity android:name=".SmsDetailActivity"/>
+        <activity android:name=".SmsListActivity"/>
         <receiver
             android:name=".MyReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.tarek.alarm"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.tarek.alarm" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ReminderNotification" />
+        <activity android:name=".ReminderNotification"/>
         <activity android:name=".UpdateActivity" />
         <activity android:name=".DOBAddActivity" />
         <activity android:name=".BirthdayDetailActivity" />
-        <activity android:name=".BirthdayListActivity">
+        <activity android:name=".BirthdayListActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
